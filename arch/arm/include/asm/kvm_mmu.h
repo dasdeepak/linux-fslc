@@ -77,6 +77,13 @@
 #include <asm/alternative.h>
 #include <asm/cpufeature.h>
 
+/* Contrary to arm64, there is no need to generate a PC-relative address */
+#define hyp_symbol_addr(s)						\
+	({								\
+		typeof(s) *addr = &(s);					\
+		addr;							\
+	})
+
 /*
  * Convert a kernel VA into a HYP VA.
  * reg: VA to be converted.
@@ -367,5 +374,11 @@ static inline int kvm_map_vectors(void)
 }
 #endif
 
-#endif /* __ASSEMBLY__ */
-#endif /* __ARM64_KVM_MMU_H__ */
+static inline int hyp_map_aux_data(void)
+{
+	return 0;
+}
+
+#endif	/* !__ASSEMBLY__ */
+
+#endif /* __ARM_KVM_MMU_H__ */
