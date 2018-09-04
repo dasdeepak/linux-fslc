@@ -71,6 +71,11 @@
 		};
 	};
 
+	psci {
+		compatible      = "arm,psci-0.2";
+		method          = "smc";
+	};
+
 	soc {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -284,6 +289,13 @@
 			compatible = "fsl,imx6q-hdmi-cec";
 			interrupts = <0 115 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
+		};
+
+		firmware {
+			optee {
+				compatible = "linaro,optee-tz";
+				method = "smc";
+                       };
 		};
 
 		aips-bus@02000000 { /* AIPS1 */
