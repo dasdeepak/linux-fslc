@@ -532,6 +532,13 @@ config CLKSRC_IMX_GPT
 	depends on ARM && CLKDEV_LOOKUP
 	select CLKSRC_MMIO
 
+config MX6_ADD_TIMER_OFFSET
+	bool "Add bootloader time offset to kernel timer time"
+	default n
+	help
+	   Enabling this will using time since reset insted of time since
+	   timer init.
+
 config CLKSRC_IMX_TPM
 	bool "Clocksource using i.MX TPM" if COMPILE_TEST
 	depends on ARM && CLKDEV_LOOKUP && GENERIC_CLOCKEVENTS

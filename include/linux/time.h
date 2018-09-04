@@ -39,6 +39,10 @@ static inline int timeval_compare(const struct timeval *lhs, const struct timeva
 	return lhs->tv_usec - rhs->tv_usec;
 }
 
+#if defined(CONFIG_MX6_ADD_TIMER_OFFSET)
+extern s64 mxc_get_time_offset(void);
+#endif
+
 extern time64_t mktime64(const unsigned int year, const unsigned int mon,
 			const unsigned int day, const unsigned int hour,
 			const unsigned int min, const unsigned int sec);
@@ -165,6 +169,10 @@ static inline bool timespec_inject_offset_valid(const struct timespec *ts)
  */
 #ifdef CONFIG_ARCH_USES_GETTIMEOFFSET
 extern u32 (*arch_gettimeoffset)(void);
+#endif
+
+#if defined(CONFIG_MX6_ADD_TIMER_OFFSET)
+extern s64 mxc_get_time_offset(void);
 #endif
 
 struct itimerval;

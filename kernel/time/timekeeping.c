@@ -658,6 +658,10 @@ static void timekeeping_forward_now(struct timekeeper *tk)
 	tk_normalize_xtime(tk);
 
 	nsec = clocksource_cyc2ns(delta, tk->tkr_raw.mult, tk->tkr_raw.shift);
+
+#if defined(CONFIG_MX6_ADD_TIMER_OFFSET)
+       	nsec += mxc_get_time_offset();
+#endif
 	timespec64_add_ns(&tk->raw_time, nsec);
 }
 
