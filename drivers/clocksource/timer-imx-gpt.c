@@ -98,6 +98,16 @@ struct imx_gpt_data {
 			      struct clock_event_device *ced);
 };
 
+#if defined(CONFIG_MX6_ADD_TIMER_OFFSET)
+static s64 offset_ns = 0;
+
+/* Getter method of start time offset (IBC till now ) */
+inline s64 mxc_get_time_offset(void)
+{
+	return offset_ns;
+}
+#endif
+
 static inline struct imx_timer *to_imx_timer(struct clock_event_device *ced)
 {
 	return container_of(ced, struct imx_timer, ced);
@@ -504,6 +514,14 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
 		imxtm->clk_per = of_clk_get_by_name(np, "per");
 
 	imxtm->type = type;
+
+/* Using time since reset insted of time since timer init. */
+#if defined(CONFIG_MX6_ADD_TIMER_OFFSET)
+	/* The GPT is running at 3MHz set from IBC. Thus, 1 tick is equivalent to 1/3 us (or 1us needs 3 ticks) */
+	offset_ns = (__raw_readl(imxtm->base + (V2_TCN)) / 3) * 1000 ;
+	pr_info("mxc_clocksource_init \n");
+	pr_info("Init and register the timer to the framework with a %lld ns offset. \n", offset_ns);
+#endif
 
 	ret = _mxc_timer_init(imxtm);
 	if (ret)

@@ -42,6 +42,12 @@
  */
 
 /dts-v1/;
+
+/* Reserve last 64MB for TA to run properly, ideally it should be done
+   by bootloader/firmware.
+*/
+/memreserve/ 0x4c000000 0x4000000;
+
 #include "imx6q.dtsi"
 #include "imx6qdl-nitrogen6x.dtsi"
 
